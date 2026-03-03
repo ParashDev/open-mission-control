@@ -76,10 +76,22 @@
             <noscript>
                 <div style="max-width:800px;margin:60px auto;font-family:Inter,sans-serif;color:#333;line-height:1.7">
                     <h2>Open Mission Control</h2>
-                    <p>A free, open-source mission control UI for AI agent orchestration. Built to work with OpenClaw or any AI agent framework of your choice.</p>
-                    <p>Open Mission Control gives you a complete command center interface to monitor, manage, and coordinate a fleet of AI agents. It includes a real-time dashboard, agent management across departments, a Kanban task board, heartbeat monitoring with configurable checklist cycles, per-agent chat, a team board chat with mentions, an activity feed, cron job scheduling, a skill system with detailed instructions, per-agent memory, and full system settings with data export and import.</p>
-                    <p>The UI runs entirely in the browser with no server required. All data is stored in localStorage with simulated agents so you can explore every feature immediately. When you are ready to go to production, point your AI coding tool at this codebase and let it build the real backend — you choose the stack, the database, and the agent framework.</p>
-                    <p>Built with vanilla HTML, CSS, and JavaScript. No build step, no frameworks, no dependencies to install. Uses Tailwind CSS, Lucide Icons, and Google Fonts via CDN.</p>
+                    <p>A free, open-source mission control UI for AI agent orchestration. Built to work with OpenClaw or any AI agent framework of your choice. Take this frontend, feed it to your AI coding tool, and let it build the real backend with whatever stack you prefer.</p>
+
+                    <h3>What is Open Mission Control?</h3>
+                    <p>Open Mission Control is a complete command center interface for managing fleets of AI agents. It provides everything you need to monitor agent health, assign tasks, track activity, and coordinate workflows across an entire organization of autonomous agents. The interface is designed around a department-based hierarchy with a CEO agent overseeing department heads who manage individual worker agents.</p>
+
+                    <h3>Features</h3>
+                    <p>The dashboard provides a real-time overview of your agent fleet including status indicators, a task pipeline summary, recent activity feed, and heartbeat alerts for agents that need attention. The agent management system organizes agents across six departments — Executive, Engineering, Finance, Marketing, Operations, and Cybersecurity — with full org hierarchy support, role assignments, and skill configuration.</p>
+                    <p>The Kanban task board supports drag-and-drop task management with priority levels, agent assignment, and status columns from Inbox through Done. The heartbeat monitoring system follows the OpenClaw pattern where agents wake up on a configurable schedule, evaluate a checklist of instructions, and report OK or surface alerts. Each agent has configurable intervals from one minute to twenty-four hours, active hours scheduling, and a full execution log with pass-fail breakdowns.</p>
+                    <p>Additional features include per-agent chat, a team-wide board chat with at-mention support, a chronological activity feed, cron job scheduling with status tracking, an agent skill system with detailed instruction sets, per-agent key-value memory storage, and full system settings with theme toggling, data export, data import, and factory reset.</p>
+
+                    <h3>How to use it</h3>
+                    <p>Clone the repository and open index.html in a browser. No install, no build step, no server required. All seed data is generated on first load with fifteen simulated agents so you can explore every feature immediately. When you are ready to connect real agents, point your AI coding tool at the codebase and tell it to replace the localStorage data layer with your preferred backend — Supabase, Firebase, a REST API, or anything else. The clean separation between the UI layer and the store makes this straightforward.</p>
+
+                    <h3>Tech Stack</h3>
+                    <p>Built with vanilla HTML, CSS, and JavaScript with zero build dependencies. Styling uses Tailwind CSS via CDN. Icons come from the Lucide icon library. Typography uses Inter and JetBrains Mono from Google Fonts. All data persistence uses browser localStorage which can be swapped for any backend of your choice.</p>
+
                     <p><strong>Please enable JavaScript to use Open Mission Control.</strong></p>
                 </div>
             </noscript>
@@ -96,3 +108,4 @@
     <script src="scripts/dashboard.js"></script>
 </body>
 </html>
+

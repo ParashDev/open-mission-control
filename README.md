@@ -1,36 +1,53 @@
 # Open Mission Control
 
-A simulated AI agent command center built as a single-page dashboard. Monitor, manage, and orchestrate a team of AI agents across departments — all running in the browser with localStorage persistence.
+A free, open-source mission control UI for AI agent orchestration. Built to work with [OpenClaw](https://github.com/openclaw) or any AI agent framework of your choice.
 
-## Features
+## What is this?
 
-- **Dashboard** — Real-time overview of agent status, task pipeline, and activity feed
-- **Agents** — 15 agents organized across 6 departments (Executive, Engineering, Finance, Marketing, Operations, Cybersecurity) with an org hierarchy
-- **Tasks** — Kanban board with drag-and-drop, priority levels, and agent assignment
-- **Heartbeat** — OpenClaw-pattern heartbeat monitoring with configurable intervals, checklist-based cycles, and execution logs
-- **Chat** — Per-agent chat interface with simulated responses
-- **Board Chat** — Team-wide communication channel with @mentions
-- **Activity Feed** — Chronological log of all agent actions and system events
-- **Cron Jobs** — Scheduled task management with status tracking
-- **Skills** — Agent capability system with detailed instruction sets
-- **Memory** — Per-agent key-value memory store
-- **System** — Settings, data export/import, and factory reset
+This is the **frontend** — a fully functional command center UI with dashboards, agent management, task boards, heartbeat monitoring, chat, and more. Everything runs in the browser with simulated data out of the box so you can see exactly how it works.
+
+The idea is simple: **take this UI, feed it to OpenClaw (or Claude, or any AI coding agent), and let it build the real backend for you.** You choose the stack — Node, Python, Go, whatever. You choose the database — Postgres, Supabase, Firebase. You choose the agent framework — OpenClaw, CrewAI, AutoGen, or your own. This UI gives you the complete interface layer so you're not starting from scratch.
+
+## How to use it
+
+### 1. Try the demo
+Clone this repo, open `index.html` in a browser. That's it — no install, no build, no server. Everything works with localStorage and simulated agents so you can explore every feature.
+
+### 2. Build your backend
+Point your AI coding tool at this codebase and tell it what you want:
+- *"Connect this to a real Supabase backend"*
+- *"Replace the localStorage store with a REST API"*
+- *"Wire up the heartbeat system to real agent health checks"*
+- *"Make the chat work with OpenClaw agents"*
+
+The UI is vanilla HTML/JS with a clean `store.js` data layer — easy for any AI tool to understand and extend.
+
+### 3. Make it yours
+Add agents, remove departments, change the org structure, swap the theme. Everything is in plain files, no framework lock-in.
+
+## What's included
+
+| Page | What it does |
+|------|-------------|
+| **Dashboard** | Real-time overview — agent status, task pipeline, activity feed, heartbeat alerts |
+| **Agents** | 15 agents across 6 departments with org hierarchy, status, and skill assignments |
+| **Tasks** | Kanban board with drag-and-drop, priorities, and agent assignment |
+| **Heartbeat** | OpenClaw-pattern heartbeat monitoring — configurable intervals, checklist cycles, execution logs |
+| **Chat** | Per-agent chat interface |
+| **Board Chat** | Team-wide channel with @mentions |
+| **Activity** | Chronological log of all agent actions and system events |
+| **Cron Jobs** | Scheduled task management with status tracking |
+| **Skills** | Agent capability system with detailed instruction sets |
+| **Memory** | Per-agent key-value memory store |
+| **System** | Settings, theme toggle, data export/import, factory reset |
 
 ## Tech Stack
 
-- Vanilla HTML, CSS, JavaScript — no build step, no frameworks
+- Vanilla HTML, CSS, JavaScript — no build step, no frameworks, no dependencies to install
 - Tailwind CSS via CDN
 - Lucide Icons via CDN
 - Google Fonts (Inter + JetBrains Mono)
-- localStorage for all data persistence
-
-## Getting Started
-
-1. Clone the repo
-2. Open `index.html` in a browser
-3. That's it — no install, no build, no server needed
-
-All seed data is generated on first load. Use **System > Reset All Data** to restore defaults at any time.
+- localStorage for data persistence (replace with your own backend)
 
 ## Project Structure
 
@@ -46,27 +63,17 @@ All seed data is generated on first load. Use **System > Reset All Data** to res
 ├── memory.html         # Agent memory
 ├── system.html         # Settings & data
 ├── scripts/
-│   ├── store.js        # localStorage CRUD + seed data
+│   ├── store.js        # Data layer — localStorage CRUD + seed data (swap this for your API)
 │   ├── shared.js       # Bootstrap & scroll-reveal
 │   ├── sidebar.js      # Navigation sidebar
 │   ├── header.js       # Page header
 │   ├── theme.js        # Light/dark theme toggle
 │   ├── clock.js        # Mission clock
-│   ├── dashboard.js    # Dashboard page
-│   ├── agents.js       # Agents page
-│   ├── tasks.js        # Tasks page
-│   ├── heartbeat.js    # Heartbeat page
-│   ├── chat.js         # Chat page
-│   ├── board-chat.js   # Board chat page
-│   ├── activity.js     # Activity page
-│   ├── cron-jobs.js    # Cron jobs page
-│   ├── skills.js       # Skills page
-│   ├── memory.js       # Memory page
-│   └── system.js       # System page
+│   └── [page].js       # One script per page
 └── styles/
     └── custom.css      # Custom animations & components
 ```
 
 ## License
 
-MIT
+MIT — use it however you want.

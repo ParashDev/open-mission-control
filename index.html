@@ -9,10 +9,33 @@
     <meta property="og:title" content="Open Mission Control — AI Agent Dashboard">
     <meta property="og:description" content="Free mission control UI for AI agent orchestration. Monitor, manage, and coordinate your agent fleet.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://open-mission-control.dplooy.com">
+    <meta property="og:url" content="https://openclaw-mission-control.dplooy.com">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Open Mission Control">
     <meta name="twitter:description" content="Free mission control UI for AI agent orchestration.">
+    <link rel="canonical" href="https://openclaw-mission-control.dplooy.com">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Open Mission Control",
+        "description": "Free, open-source mission control UI for AI agent orchestration. Monitor agents, manage tasks, track heartbeats, and coordinate workflows. Built to work with OpenClaw or any AI agent framework.",
+        "url": "https://openclaw-mission-control.dplooy.com",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "ParashDev",
+            "url": "https://github.com/ParashDev"
+        },
+        "codeRepository": "https://github.com/ParashDev/open-mission-control"
+    }
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,7 +71,19 @@
 <body class="bg-neutral-50 dark:bg-mc-dark text-neutral-900 dark:text-neutral-100 font-sans antialiased transition-colors duration-300" data-page-title="Dashboard">
 
     <main id="mc-main" class="px-4 md:px-6 pb-8">
-        <div id="page-content"></div>
+        <h1 class="sr-only">Open Mission Control — AI Agent Orchestration Dashboard</h1>
+        <div id="page-content">
+            <noscript>
+                <div style="max-width:800px;margin:60px auto;font-family:Inter,sans-serif;color:#333;line-height:1.7">
+                    <h2>Open Mission Control</h2>
+                    <p>A free, open-source mission control UI for AI agent orchestration. Built to work with OpenClaw or any AI agent framework of your choice.</p>
+                    <p>Open Mission Control gives you a complete command center interface to monitor, manage, and coordinate a fleet of AI agents. It includes a real-time dashboard, agent management across departments, a Kanban task board, heartbeat monitoring with configurable checklist cycles, per-agent chat, a team board chat with mentions, an activity feed, cron job scheduling, a skill system with detailed instructions, per-agent memory, and full system settings with data export and import.</p>
+                    <p>The UI runs entirely in the browser with no server required. All data is stored in localStorage with simulated agents so you can explore every feature immediately. When you are ready to go to production, point your AI coding tool at this codebase and let it build the real backend — you choose the stack, the database, and the agent framework.</p>
+                    <p>Built with vanilla HTML, CSS, and JavaScript. No build step, no frameworks, no dependencies to install. Uses Tailwind CSS, Lucide Icons, and Google Fonts via CDN.</p>
+                    <p><strong>Please enable JavaScript to use Open Mission Control.</strong></p>
+                </div>
+            </noscript>
+        </div>
     </main>
 
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>

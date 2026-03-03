@@ -8,9 +8,15 @@ This is the **frontend** — a fully functional command center UI with dashboard
 
 The idea is simple: **take this UI, feed it to OpenClaw (or Claude, or any AI coding agent), and let it build the real backend for you.** You choose the stack — Node, Python, Go, whatever. You choose the database — Postgres, Supabase, Firebase. You choose the agent framework — OpenClaw, CrewAI, AutoGen, or your own. This UI gives you the complete interface layer so you're not starting from scratch.
 
+## Live Demo
+
+**[openclaw-mission-control.dplooy.com](https://openclaw-mission-control.dplooy.com)**
+
+No sign-up, no install — just open it and explore. Everything runs in your browser.
+
 ## How to use it
 
-### 1. Try the demo
+### 1. Try it locally
 Clone this repo, open `index.html` in a browser. That's it — no install, no build, no server. Everything works with localStorage and simulated agents so you can explore every feature.
 
 ### 2. Build your backend

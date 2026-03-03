@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heartbeat — Open Mission Control</title>
+    <meta name="description" content="Real-time heartbeat monitoring for all agents.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+                    colors: {
+                        mc: { dark: '#0a0a0a', card: '#111111', border: '#1e1e1e', hover: '#1a1a1a' },
+                        status: { critical: '#FF3838', serious: '#FFB302', caution: '#FCE83A', normal: '#56F000', standby: '#2DCCFF', off: '#A4ABB6' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles/custom.css">
+</head>
+<body class="bg-neutral-50 dark:bg-mc-dark text-neutral-900 dark:text-neutral-100 font-sans antialiased transition-colors duration-300" data-page-title="Heartbeat">
+    <main id="mc-main" class="px-4 md:px-6 pb-8">
+        <div id="page-content"></div>
+    </main>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="scripts/store.js"></script>
+    <script src="scripts/sidebar.js"></script>
+    <script src="scripts/header.js"></script>
+    <script src="scripts/theme.js"></script>
+    <script src="scripts/clock.js"></script>
+    <script src="scripts/shared.js"></script>
+    <script src="scripts/heartbeat.js"></script>
+</body>
+</html>

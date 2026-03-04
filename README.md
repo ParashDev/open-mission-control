@@ -47,6 +47,32 @@ Add agents, remove departments, change the org structure, swap the theme. Everyt
 | **Memory** | Per-agent key-value memory store |
 | **System** | Settings, theme toggle, data export/import, factory reset |
 
+## How it works — Agent Intelligence
+
+Everything is connected through an **event bus** (`events.js`) and an **agent decision engine** (`engine.js`). Actions on one page trigger reactions across the entire system — just like a real agent framework.
+
+### Test it yourself
+
+After cloning, open any page and go to **System → Factory Reset** to load fresh seed data. Then try:
+
+1. **Context-aware chat** — Open Chat, pick any agent, type "what are you working on?" or "what are your skills?" — replies reference their actual tasks, skills, and health status instead of random text
+
+2. **Board chat with real coordination** — Open Board Chat and watch — Nexus (CEO) directs department heads by name, agents report on actual tasks they're assigned to
+
+3. **Skill-based task routing** — Go to Tasks → New Task, type "security audit" in the title — a hint appears below the agent dropdown suggesting Sentinel as the best skill match. Try "api development" and it suggests Spark or Nova
+
+4. **Health-aware cron execution** — Run a cron job on the Cron Jobs page — success rate depends on the assigned agent's heartbeat health (95% if healthy, 40% if unhealthy). On failure, a follow-up investigation task auto-creates in the task inbox
+
+5. **Cross-system cascade** — On the Heartbeat page, let it run. When an agent gets 3+ consecutive heartbeat alerts:
+   - Agent status auto-changes to critical
+   - Their in-progress tasks get unassigned back to inbox
+   - Nexus posts in board chat directing the department head to investigate
+   - An incident task is auto-created
+
+6. **Task completion ripple** — Drag a task to "Done" on the Tasks board — the agent announces completion in board chat and a memory entry is saved to their memory store
+
+7. **Live dashboard metrics** — Dashboard shows real computed stats — "Completed Tasks" and "Cron Failures" instead of fake token/cost numbers. Uptime is calculated from mission start time. Heartbeat alerts section links directly to the heartbeat page
+
 ## Tech Stack
 
 - Vanilla HTML, CSS, JavaScript — no build step, no frameworks, no dependencies to install
@@ -70,6 +96,8 @@ Add agents, remove departments, change the org structure, swap the theme. Everyt
 ├── system.html         # Settings & data
 ├── scripts/
 │   ├── store.js        # Data layer — localStorage CRUD + seed data (swap this for your API)
+│   ├── events.js       # Pub/sub event bus — cross-system communication
+│   ├── engine.js       # Agent decision engine — skill routing, smart chat, CEO orchestration
 │   ├── shared.js       # Bootstrap & scroll-reveal
 │   ├── sidebar.js      # Navigation sidebar
 │   ├── header.js       # Page header

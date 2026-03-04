@@ -215,6 +215,11 @@ window.MC = window.MC || {};
 
     /* ---------- Generate contextual message ---------- */
     function generateMessage(agent) {
+        if (MC.engine && MC.engine.generateBoardMessage) {
+            return MC.engine.generateBoardMessage(agent.id);
+        }
+
+        /* Fallback: original template logic */
         var templates;
         if (agent.role === 'ceo') {
             templates = CEO_TEMPLATES;
@@ -230,7 +235,6 @@ window.MC = window.MC || {};
         var taskTitle = activeTasks.length > 0 ? pickRandom(activeTasks).title : 'current sprint items';
         var action = pickRandom(ACTIONS);
 
-        /* Find relevant agents for mentions */
         var mentions = [];
         var text = template;
 

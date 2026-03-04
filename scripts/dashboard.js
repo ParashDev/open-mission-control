@@ -30,6 +30,15 @@
         return String(n);
     }
 
+    function getUptime() {
+        var settings = MC.store.getSettings();
+        var uptimeMs = Date.now() - (settings.missionStart || Date.now());
+        var d = Math.floor(uptimeMs / 86400000);
+        var h = Math.floor((uptimeMs % 86400000) / 3600000);
+        var m = Math.floor((uptimeMs % 3600000) / 60000);
+        return d + 'd ' + h + 'h ' + m + 'm';
+    }
+
     /* System gauges */
     var sysData = { cpu: 42, ram: 58, disk: 34, net: 12.4 };
 
@@ -71,7 +80,7 @@
             '</div>' +
             '<div class="flex items-center justify-between">' +
                 '<span class="font-mono text-[11px] text-neutral-500">Uptime</span>' +
-                '<span class="font-mono text-[11px] tabular-nums">14d 6h 23m</span>' +
+                '<span class="font-mono text-[11px] tabular-nums">' + getUptime() + '</span>' +
             '</div>' +
         '</div>';
     }
@@ -174,11 +183,15 @@
         var activeTasks = tasks.filter(function (t) { return t.column !== 'done'; }).length;
 
         /* ===== Stat cards ===== */
+        var completedTasks = tasks.filter(function(t) { return t.column === 'done'; }).length;
+        var cronJobs = MC.store.getCronJobs();
+        var failedJobs = cronJobs.filter(function(j) { return j.lastStatus === 'failure'; }).length;
+
         var stats = [
             { label: 'Total Agents', value: agents.length, icon: 'users', color: 'standby' },
             { label: 'Active Tasks', value: activeTasks, icon: 'list-checks', color: 'normal' },
-            { label: 'Tokens Used', value: fmtTokens(87400), icon: 'hash', color: 'serious' },
-            { label: 'Est. Cost', value: '$12.40', icon: 'receipt', color: 'caution' },
+            { label: 'Completed', value: completedTasks, icon: 'check-circle', color: 'normal' },
+            { label: 'Cron Failures', value: failedJobs, icon: 'alert-triangle', color: failedJobs > 0 ? 'critical' : 'normal' },
         ];
 
         var statCardsHtml = '<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4 reveal">';
@@ -290,9 +303,12 @@
                     '<i data-lucide="bell-ring" class="w-3.5 h-3.5 text-neutral-400"></i>' +
                     '<span class="font-mono text-[11px] uppercase tracking-wider text-neutral-500">Heartbeat Alerts</span>' +
                 '</div>' +
+                '<div class="flex items-center gap-2">' +
                 (alertAgents.length > 0
                     ? '<span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-status-critical/10 text-status-critical">' + alertAgents.length + ' issue' + (alertAgents.length !== 1 ? 's' : '') + '</span>'
                     : '<span class="font-mono text-[10px] text-status-normal">All clear</span>') +
+                '<a href="heartbeat.html" class="font-mono text-[10px] text-status-standby hover:underline">View All</a>' +
+                '</div>' +
             '</div>' +
             '<div class="p-4 rounded-2xl bg-white dark:bg-mc-card border border-neutral-200 dark:border-mc-border">';
 

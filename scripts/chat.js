@@ -218,7 +218,9 @@
             var indicator = document.getElementById('typing-indicator');
             if (indicator) indicator.remove();
 
-            var reply = MC.responses[Math.floor(Math.random() * MC.responses.length)];
+            var reply = (MC.engine && MC.engine.generateReply)
+                ? MC.engine.generateReply(selectedAgentId, text)
+                : MC.responses[Math.floor(Math.random() * MC.responses.length)];
             MC.store.addChatMessage(selectedAgentId, selectedAgentId, reply);
             renderChatOnly();
         }, 1200 + Math.random() * 1500);

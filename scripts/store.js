@@ -552,15 +552,20 @@ window.MC = window.MC || {};
             agents.push(agent);
             write(KEYS.agents, agents);
             this.log(agent.name, 'created', 'New agent registered: ' + agent.name, 'normal');
+            if (MC.events) MC.events.emit('agent:created', { agent: agent });
             return agent;
         },
         updateAgent: function (id, data) {
             var agents = this.getAgents();
             var idx = agents.findIndex(function (a) { return a.id === id; });
             if (idx === -1) return null;
+            var previousStatus = agents[idx].status;
             Object.assign(agents[idx], data);
             write(KEYS.agents, agents);
             this.log(agents[idx].name, 'updated', 'Agent configuration changed', 'standby');
+            if (MC.events && data.status && data.status !== previousStatus) {
+                MC.events.emit('agent:statusChanged', { agent: agents[idx], previousStatus: previousStatus, newStatus: data.status });
+            }
             return agents[idx];
         },
         deleteAgent: function (id) {
@@ -569,6 +574,7 @@ window.MC = window.MC || {};
             if (!agent) return false;
             write(KEYS.agents, agents.filter(function (a) { return a.id !== id; }));
             this.log(agent.name, 'deleted', 'Agent removed from fleet', 'caution');
+            if (MC.events) MC.events.emit('agent:deleted', { agentId: id, name: agent.name });
             return true;
         },
 
@@ -594,15 +600,20 @@ window.MC = window.MC || {};
             tasks.unshift(task);
             write(KEYS.tasks, tasks);
             this.log('System', 'task-created', 'New task: ' + task.title, 'standby');
+            if (MC.events) MC.events.emit('task:created', { task: task });
             return task;
         },
         updateTask: function (id, data) {
             var tasks = this.getTasks();
             var idx = tasks.findIndex(function (t) { return t.id === id; });
             if (idx === -1) return null;
+            var previousAgentId = tasks[idx].agentId;
             data.updatedAt = now();
             Object.assign(tasks[idx], data);
             write(KEYS.tasks, tasks);
+            if (MC.events && data.agentId !== undefined && data.agentId !== previousAgentId) {
+                MC.events.emit('task:assigned', { task: tasks[idx], previousAgentId: previousAgentId, newAgentId: data.agentId });
+            }
             return tasks[idx];
         },
         deleteTask: function (id) {
@@ -611,6 +622,7 @@ window.MC = window.MC || {};
             if (!task) return false;
             write(KEYS.tasks, tasks.filter(function (t) { return t.id !== id; }));
             this.log('System', 'task-deleted', 'Task removed: ' + task.title, 'caution');
+            if (MC.events) MC.events.emit('task:deleted', { taskId: id, title: task.title });
             return true;
         },
         addTaskComment: function (taskId, text) {
@@ -629,9 +641,12 @@ window.MC = window.MC || {};
         },
 
         moveTask: function (id, column) {
+            var currentTask = this.getTask(id);
+            var fromColumn = currentTask ? currentTask.column : null;
             var task = this.updateTask(id, { column: column });
             if (task) {
                 this.log('System', 'task-moved', task.title + ' moved to ' + column, 'standby');
+                if (MC.events) MC.events.emit('task:moved', { task: task, fromColumn: fromColumn, toColumn: column });
             }
             return task;
         },
@@ -670,6 +685,7 @@ window.MC = window.MC || {};
             if (!chats[agentId]) chats[agentId] = [];
             chats[agentId].push({ from: from, text: text, timestamp: now() });
             write(KEYS.chats, chats);
+            if (MC.events) MC.events.emit('chat:message', { agentId: agentId, from: from, text: text });
         },
 
         /* --- Memory --- */
@@ -688,6 +704,7 @@ window.MC = window.MC || {};
             write(KEYS.memory, memory);
             var agent = this.getAgent(agentId);
             this.log(agent ? agent.name : agentId, 'memory-add', 'Added memory: ' + key, 'standby');
+            if (MC.events) MC.events.emit('memory:updated', { agentId: agentId, entry: entry });
             return entry;
         },
         updateMemoryEntry: function (agentId, entryId, key, value) {
@@ -765,6 +782,7 @@ window.MC = window.MC || {};
             var agent = this.getAgent(job.agentId);
             var agentName = agent ? agent.name : 'System';
             this.log(agentName, 'cron-run', job.name + ' — ' + status, success ? 'normal' : 'critical');
+            if (MC.events) MC.events.emit('cron:executed', { job: this.getCronJob(id), result: { success: success, status: status } });
             return { success: success, status: status };
         },
 
@@ -832,6 +850,20 @@ window.MC = window.MC || {};
                 hb[agentId].log = hb[agentId].log.slice(-100);
             }
             write(KEYS.heartbeats, hb);
+            if (MC.events) {
+                if (entry.result === 'alert') {
+                    MC.events.emit('heartbeat:alert', { agentId: agentId, entry: entry });
+                } else if (entry.result === 'ok') {
+                    var log = hb[agentId].log;
+                    var recentAlerts = 0;
+                    for (var ri = log.length - 2; ri >= Math.max(0, log.length - 5); ri--) {
+                        if (log[ri].result === 'alert') recentAlerts++;
+                    }
+                    if (recentAlerts >= 2) {
+                        MC.events.emit('heartbeat:recovered', { agentId: agentId, entry: entry });
+                    }
+                }
+            }
             return entry;
         },
 
@@ -879,6 +911,7 @@ window.MC = window.MC || {};
             messages.push(msg);
             if (messages.length > 100) messages = messages.slice(-100);
             write(KEYS.boardChat, messages);
+            if (MC.events) MC.events.emit('board:message', { message: msg });
             return msg;
         },
         clearBoardChat: function () {

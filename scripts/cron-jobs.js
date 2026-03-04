@@ -232,7 +232,9 @@
         document.querySelectorAll('.run-cron-btn').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 var id = this.dataset.jobId;
-                var result = MC.store.runCronJob(id);
+                var result = (MC.engine && MC.engine.executeCronJob)
+                    ? MC.engine.executeCronJob(id)
+                    : MC.store.runCronJob(id);
                 if (result) {
                     showRunResult(id, result);
                 }

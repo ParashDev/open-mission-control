@@ -233,6 +233,7 @@
                         '</select>' +
                     '</div>' +
                 '</div>' +
+                '<div id="skill-match-hint"></div>' +
             '</div>' +
             '<div class="flex justify-end gap-3 mt-6 pt-4 border-t border-neutral-200 dark:border-mc-border">' +
                 '<button class="modal-close font-mono text-[12px] px-4 py-2 rounded-lg bg-neutral-100 dark:bg-mc-hover hover:bg-neutral-200 dark:hover:bg-mc-border transition-colors">Cancel</button>' +
@@ -250,6 +251,44 @@
         overlay.addEventListener('click', function (e) {
             if (e.target === overlay) overlay.remove();
         });
+
+        /* Skill-match hint */
+        function updateSkillHint() {
+            var hintEl = document.getElementById('skill-match-hint');
+            if (!hintEl || !MC.engine || !MC.engine.suggestAgent) return;
+            var title = document.getElementById('modal-title').value;
+            var desc = document.getElementById('modal-desc').value;
+            var selectedAgent = document.getElementById('modal-agent').value;
+            if (!title) { hintEl.innerHTML = ''; return; }
+
+            var suggestions = MC.engine.suggestAgent({ title: title, description: desc });
+            if (suggestions.length === 0) { hintEl.innerHTML = ''; return; }
+
+            var best = suggestions[0];
+            var isMatch = selectedAgent === best.agent.id;
+            var skillNames = best.matchedSkills.map(function(sid) {
+                var s = MC.store.getSkill(sid);
+                return s ? s.name : sid;
+            }).join(', ');
+
+            if (isMatch) {
+                hintEl.innerHTML = '<div class="flex items-center gap-1.5 mt-2">' +
+                    '<i data-lucide="check-circle" class="w-3 h-3 text-status-normal"></i>' +
+                    '<span class="font-mono text-[10px] text-status-normal">Good match: ' + skillNames + '</span>' +
+                '</div>';
+            } else {
+                hintEl.innerHTML = '<div class="flex items-center gap-1.5 mt-2">' +
+                    '<i data-lucide="lightbulb" class="w-3 h-3 text-status-serious"></i>' +
+                    '<span class="font-mono text-[10px] text-status-serious">Suggested: ' +
+                        best.agent.name + ' (skills: ' + skillNames + ')</span>' +
+                '</div>';
+            }
+            lucide.createIcons();
+        }
+        document.getElementById('modal-agent').addEventListener('change', updateSkillHint);
+        document.getElementById('modal-title').addEventListener('input', updateSkillHint);
+        document.getElementById('modal-desc').addEventListener('input', updateSkillHint);
+        updateSkillHint();
 
         document.getElementById('modal-save').addEventListener('click', function () {
             var title = document.getElementById('modal-title').value.trim();
